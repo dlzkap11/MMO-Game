@@ -1,24 +1,19 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using static Define;
 
-public class PlayerController : CreatureController
+public class MonsterController : CreatureController
 {
-
     protected override void Init()
     {
         base.Init();
+        State = CreatureState.Idle;
+        Dir = MoveDir.None;
     }
 
     protected override void UpdateController()
     {
-        GetDirInput();
+        //GetDirInput();
         base.UpdateController();
-    }
-
-    void LateUpdate()
-    {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
     }
 
     // 키보드입력
@@ -45,5 +40,4 @@ public class PlayerController : CreatureController
             Dir = MoveDir.None;
         }
     }
-
 }

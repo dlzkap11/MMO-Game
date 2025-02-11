@@ -21,21 +21,22 @@ public class MapEditor
 
         foreach (GameObject go in gameObjects)
         {
+            Tilemap tmbase = Util.FindChild<Tilemap>(go, "Tilemap_Base", true);
             Tilemap tm = Util.FindChild<Tilemap>(go, "Tilemap_Collision", true);
 
             using (var writer = File.CreateText($"Assets/Resources/Map/{go.name}.txt"))
             {
                 // 맵의 크기
-                writer.WriteLine(tm.cellBounds.xMin);
-                writer.WriteLine(tm.cellBounds.xMax);
-                writer.WriteLine(tm.cellBounds.yMin);
-                writer.WriteLine(tm.cellBounds.yMax);
+                writer.WriteLine(tmbase.cellBounds.xMin);
+                writer.WriteLine(tmbase.cellBounds.xMax);
+                writer.WriteLine(tmbase.cellBounds.yMin);
+                writer.WriteLine(tmbase.cellBounds.yMax);
 
 
                 // 타일을 찾아서 표시 있으면 1 없으면 0
-                for (int y = tm.cellBounds.yMax; y >= tm.cellBounds.yMin; y--)
+                for (int y = tmbase.cellBounds.yMax; y >= tmbase.cellBounds.yMin; y--)
                 {
-                    for (int x = tm.cellBounds.xMin; x <= tm.cellBounds.xMax; x++)
+                    for (int x = tmbase.cellBounds.xMin; x <= tmbase.cellBounds.xMax; x++)
                     {
                         TileBase tile = tm.GetTile(new Vector3Int(x, y, 0));
                         if (tile != null)
