@@ -24,8 +24,8 @@ public class GameScene : BaseScene
             // 랜덤 위치 스폰
             Vector3Int pos = new Vector3Int()
             {
-                x = Random.Range(-15, 15),
-                y = Random.Range(-10, 10)
+                x = Random.Range(-16, 14),
+                y = Random.Range(-7, 6)
             };
 
 
