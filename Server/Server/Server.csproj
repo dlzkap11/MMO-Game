@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+    <PackageReference Include="System.Buffers" Version="4.6.0" />
+    <PackageReference Include="System.Memory" Version="4.6.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.csproj" />
   </ItemGroup>
 
