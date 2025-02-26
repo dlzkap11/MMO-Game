@@ -26,6 +26,14 @@ public class CreatureController : MonoBehaviour
         }
     }
 
+    public void SyncPos()
+    {
+        Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
+        transform.position = destPos;
+
+    }
+
+
     public Vector3Int CellPos 
     {
         get
@@ -223,7 +231,6 @@ public class CreatureController : MonoBehaviour
 
         State = CreatureState.Idle;
         Dir = MoveDir.None;
-        CellPos = new Vector3Int(0, 0, 0);
         UpdateAnimation();
 
     }
