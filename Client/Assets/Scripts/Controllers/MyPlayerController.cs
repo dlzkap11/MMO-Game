@@ -1,8 +1,13 @@
 using Google.Protobuf.Protocol;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class MyPlayerController : PlayerController
 {
+    bool _moveKeyPressed = false;
+
     protected override void Init()
     {
         base.Init();
@@ -26,7 +31,7 @@ public class MyPlayerController : PlayerController
     protected override void UpdateIdle()
     {
         // 이동 상태로 갈지 확인
-        if (Dir != MoveDir.None)
+        if (_moveKeyPressed)
         {
             State = CreatureState.Moving;
             return;
@@ -34,14 +39,26 @@ public class MyPlayerController : PlayerController
 
 
         // 스킬 상태로 갈지 확인
-        if (Input.GetKey(KeyCode.Space))
+        if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space))
         {
-            State = CreatureState.Skill;
-            //_coSkill = StartCoroutine("CoStartPunch");
+            Debug.Log("Skill!");
 
-            _coSkill = StartCoroutine("CoStartShootArrow");
+            C_Skill skill = new C_Skill() { Info = new SkillInfo() };
+            skill.Info.SkillId = 2;
+            Managers.Network.Send(skill);
+
+            _coSkillCooltime = StartCoroutine("CoInputCooltime", 0.2f);
         }
     }
+
+    Coroutine _coSkillCooltime;
+
+    IEnumerator CoInputCooltime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _coSkillCooltime = null;
+    }
+
 
     void LateUpdate()
     {
@@ -51,6 +68,8 @@ public class MyPlayerController : PlayerController
     // 키보드입력
     void GetDirInput()
     {
+        _moveKeyPressed = true;
+
         if (Input.GetKey(KeyCode.W))
         {
             Dir = MoveDir.Up;
@@ -69,13 +88,13 @@ public class MyPlayerController : PlayerController
         }
         else
         {
-            Dir = MoveDir.None;
+            _moveKeyPressed = false;
         }
     }
 
     protected override void MoveToNextPos()
     {
-        if (Dir == MoveDir.None)
+        if (_moveKeyPressed == false)
         {
             State = CreatureState.Idle;
             CheckUpdatedFlag();
@@ -119,7 +138,7 @@ public class MyPlayerController : PlayerController
 
     }
 
-    void CheckUpdatedFlag()
+    protected override void CheckUpdatedFlag()
     {
         if (_updated)
         {
