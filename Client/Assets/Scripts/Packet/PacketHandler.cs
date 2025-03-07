@@ -23,9 +23,9 @@ class PacketHandler
     {
         S_Spawn spawnGamePacket = packet as S_Spawn;
 
-        foreach( PlayerInfo player in spawnGamePacket.Players )
+        foreach( ObjectInfo obj in spawnGamePacket.Objects)
         {
-            Managers.Object.Add(player, myPlayer : false);
+            Managers.Object.Add(obj, myPlayer : false);
         }
 
     }
@@ -34,7 +34,7 @@ class PacketHandler
     {
         S_Despawn despawnGamePacket = packet as S_Despawn;
 
-        foreach (int id in despawnGamePacket.PlayerIds)
+        foreach (int id in despawnGamePacket.ObjectIds)
         {
             Managers.Object.Remove(id);
         }
@@ -44,7 +44,7 @@ class PacketHandler
     {
         S_Move movePacket = packet as S_Move;
 
-        GameObject go = Managers.Object.FindById(movePacket.PlayerId);
+        GameObject go = Managers.Object.FindById(movePacket.ObjectId);
         if (go == null)
             return;
 
@@ -60,14 +60,14 @@ class PacketHandler
     {
         S_Skill skillPacket = packet as S_Skill;
 
-        GameObject go = Managers.Object.FindById(skillPacket.PlayerId);
+        GameObject go = Managers.Object.FindById(skillPacket.ObjectId);
         if (go == null)
             return;
 
         PlayerController pc = go.GetComponent<PlayerController>();
         if (pc != null)
         {
-            pc.UseSKill(skillPacket.Info.SkillId);
+            pc.UseSkill(skillPacket.Info.SkillId);
         }
 
     }
